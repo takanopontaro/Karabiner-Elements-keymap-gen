@@ -1,0 +1,10 @@
+{
+  "name": "keymap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "takanopontaro",
+  "devDependencies": {
+    "jsonify-excel": "0.0.8"
+  }
+}
