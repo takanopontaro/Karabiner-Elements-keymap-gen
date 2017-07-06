@@ -3,11 +3,19 @@ const Je = require('jsonify-excel');
 const DATA = new Je('map.xlsx').toJSON({ automap: true });
 
 const DNS = {
-  fn: 'fn',
+  caps: 'caps_lock',
   cmd: 'left_command',
+  lcmd: 'left_command',
+  rcmd: 'right_command',
   ctrl: 'left_control',
+  lctrl: 'left_control',
+  rctrl: 'right_control',
   opt: 'left_option',
+  lopt: 'left_option',
+  ropt: 'right_option',
   shift: 'left_shift',
+  lshift: 'left_shift',
+  rshift: 'right_shift',
   up: 'up_arrow',
   down: 'down_arrow',
   left: 'left_arrow',
@@ -18,7 +26,6 @@ const DNS = {
   space: 'spacebar',
   del: 'delete_or_backspace',
   fdel: 'delete_forward',
-  tab: 'tab',
   return: 'return_or_enter',
   ',': 'comma',
   '.': 'period',
@@ -46,8 +53,8 @@ const json = DATA.map(({ reset, any, key, mod, key0, mod0, key1, mod1, key2, mod
   }
   if (reset) {
     map.to.push({
-      key_code: 'a',
-      modifiers: [DNS['fn'], DNS['shift']]
+      key_code: 'f20',
+      modifiers: [DNS['shift']]
     });
   }
   if (key1) {
