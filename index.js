@@ -54,7 +54,7 @@ const json = DATA.map(({ reset, any, key, mod, key0, mod0, key1, mod1, key2, mod
   if (reset) {
     map.to.push({
       key_code: 'f20',
-      modifiers: [DNS['shift']]
+      modifiers: [DNS['ctrl']]
     });
   }
   if (key1) {
