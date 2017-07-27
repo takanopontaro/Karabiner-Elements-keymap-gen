@@ -57,7 +57,7 @@ const json = DATA.map(
     key4,
     mod4,
   }) => {
-    const map = initMap();
+    const map = initMap(key);
 
     mapCondition(map, 'f', f);
     mapCondition(map, 'd', d);
@@ -81,25 +81,39 @@ if (!fs.existsSync('dist')) {
 
 fs.writeFileSync(
   'dist/takanopontaro.json',
-  JSON.stringify({
-    title: 'takanopontaro',
-    rules: [
-      {
-        description: 'my rule',
-        manipulators: json,
-      },
-    ],
-  })
+  JSON.stringify(
+    {
+      title: 'takanopontaro',
+      rules: [
+        {
+          description: 'my rule',
+          manipulators: json,
+        },
+      ],
+    },
+    (key, value) => {
+      if (key === 'key_code' && Number.isFinite(value)) {
+        return String(value);
+      }
+      return value;
+    }
+  )
 );
 
-function initMap() {
+function initMap(key) {
   return {
     type: 'basic',
-    conditions: [],
+    conditions: [
+      {
+        type: 'variable_if',
+        name: 'takanopontaro-mode',
+        value: 1,
+      },
+    ],
     from: {
       key_code: DNS[key] || key,
       modifiers: {
-        optional: ['caps_lock'],
+        optional: ['caps_lock', 'left_shift'],
       },
     },
     to: [],
