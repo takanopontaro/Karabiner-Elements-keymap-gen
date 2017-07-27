@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "author": "takanopontaro",
+  "scripts": { "start": "node index.js" },
   "devDependencies": {
-    "jsonify-excel": "0.0.8"
+    "jsonify-excel": "^1.0.14",
+    "lodash": "^4.17.4"
   }
 }

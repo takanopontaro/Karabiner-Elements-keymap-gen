@@ -1,6 +1,8 @@
 const fs = require('fs');
-const Je = require('jsonify-excel');
-const DATA = new Je('map.xlsx').toJSON({ automap: true });
+const _ = require('lodash');
+const { JsonifyExcel } = require('jsonify-excel');
+
+const DATA = new JsonifyExcel('map_mode.xlsx').toJson({ automap: true });
 
 const DNS = {
   caps: 'caps_lock',
@@ -20,80 +22,105 @@ const DNS = {
   down: 'down_arrow',
   left: 'left_arrow',
   right: 'right_arrow',
-  pageup: 'page_up',
-  pagedown: 'page_down',
+  pup: 'page_up',
+  pdown: 'page_down',
   esc: 'escape',
-  space: 'spacebar',
+  spc: 'spacebar',
   del: 'delete_or_backspace',
   fdel: 'delete_forward',
-  return: 'return_or_enter',
+  ret: 'return_or_enter',
   ',': 'comma',
   '.': 'period',
   '[': 'open_bracket',
   ']': 'close_bracket',
 };
 
-const json = DATA.map(({ reset, any, key, mod, key0, mod0, key1, mod1, key2, mod2, key3, mod3, key4, mod4, key5, mod5 }) => {
-  const map = {
+const json = DATA.map(
+  ({
+    desc,
+    app,
+    any,
+    f,
+    d,
+    s,
+    a,
+    e,
+    key,
+    key0,
+    mod0,
+    key1,
+    mod1,
+    key2,
+    mod2,
+    key3,
+    mod3,
+    key4,
+    mod4,
+  }) => {
+    const map = initMap();
+
+    mapCondition(map, 'f', f);
+    mapCondition(map, 'd', d);
+    mapCondition(map, 's', s);
+    mapCondition(map, 'a', a);
+    mapCondition(map, 'e', e);
+
+    mapKey(map, key0, mod0);
+    mapKey(map, key1, mod1);
+    mapKey(map, key2, mod2);
+    mapKey(map, key3, mod3);
+    mapKey(map, key4, mod4);
+
+    return map;
+  }
+);
+
+if (!fs.existsSync('dist')) {
+  fs.mkdirSync('dist');
+}
+
+fs.writeFileSync(
+  'dist/takanopontaro.json',
+  JSON.stringify({
+    title: 'takanopontaro',
+    rules: [
+      {
+        description: 'my rule',
+        manipulators: json,
+      },
+    ],
+  })
+);
+
+function initMap() {
+  return {
     type: 'basic',
+    conditions: [],
     from: {
       key_code: DNS[key] || key,
       modifiers: {
-        mandatory: mod ? mod.split(',').map(m => DNS[m]) : [],
-        optional: any ? ['any'] : []
-      }
+        optional: ['caps_lock'],
+      },
     },
-    to: []
+    to: [],
   };
-  if (key0) {
-    map.to_if_alone = [{
-      key_code: DNS[key0] || key0,
-      modifiers: mod0 ? mod0.split(',').map(m => DNS[m]) : []
-    }]
-  }
-  if (reset) {
-    map.to.push({
-      key_code: 'f20',
-      modifiers: [DNS['ctrl']]
-    });
-  }
-  if (key1) {
-    map.to.push({
-      key_code: DNS[key1] || key1,
-      modifiers: mod1 ? mod1.split(',').map(m => DNS[m]) : []
-    });
-  }
-  if (key2) {
-    map.to.push({
-      key_code: DNS[key2] || key2,
-      modifiers: mod2 ? mod2.split(',').map(m => DNS[m]) : []
-    });
-  }
-  if (key3) {
-    map.to.push({
-      key_code: DNS[key3] || key3,
-      modifiers: mod3 ? mod3.split(',').map(m => DNS[m]) : []
-    });
-  }
-  if (key4) {
-    map.to.push({
-      key_code: DNS[key4] || key4,
-      modifiers: mod4 ? mod4.split(',').map(m => DNS[m]) : []
-    });
-  }
-  if (key5) {
-    map.to.push({
-      key_code: DNS[key5] || key5,
-      modifiers: mod5 ? mod5.split(',').map(m => DNS[m]) : []
-    });
-  }
-  return map;
-});
+}
 
-fs.writeFileSync('takanopontaro.json', JSON.stringify({
-  title: 'takanopontaro',
-  rules: [{
-    description: 'my rule',
-    manipulators: json
-  }]
-}));
+function mapCondition(map, key, flag) {
+  if (flag) {
+    map.conditions.push({
+      type: 'variable_if',
+      name: `${key}-mode`,
+      value: 1,
+    });
+  }
+}
+
+function mapKey(map, key, mod) {
+  if (key) {
+    map.to.push({
+      key_code: DNS[key] || key,
+      modifiers: mod ? mod.split(',').map(m => DNS[m]) : [],
+    });
+  }
+}
