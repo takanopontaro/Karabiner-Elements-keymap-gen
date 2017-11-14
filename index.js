@@ -39,6 +39,7 @@ const json = DATA.map(
   ({
     desc,
     app,
+    reset,
     any,
     f,
     d,
@@ -65,7 +66,7 @@ const json = DATA.map(
     mapCondition(map, 'a', a);
     mapCondition(map, 'e', e);
 
-    mapKey(map, key0, mod0);
+    mapKey(map, key0, mod0, reset);
     mapKey(map, key1, mod1);
     mapKey(map, key2, mod2);
     mapKey(map, key3, mod3);
@@ -130,8 +131,14 @@ function mapCondition(map, key, flag) {
   }
 }
 
-function mapKey(map, key, mod) {
+function mapKey(map, key, mod, reset) {
   if (key) {
+    if (reset) {
+      map.to.push({
+        key_code: 'f1',
+        modifiers: ['left_command'],
+      });
+    }
     map.to.push({
       key_code: DNS[key] || key,
       modifiers: mod ? mod.split(',').map(m => DNS[m]) : [],
