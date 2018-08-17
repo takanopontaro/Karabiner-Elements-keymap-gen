@@ -147,7 +147,7 @@ function quitTm(map, flag) {
 }
 
 function setMap(map, key, mod) {
-  if (!key) {
+  if (key === undefined) {
     return;
   }
   map.to.push({
