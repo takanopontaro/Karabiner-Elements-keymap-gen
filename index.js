@@ -117,7 +117,7 @@ function createMap(key, app) {
     to: [],
   };
   if (app) {
-    map.conditions.push({
+    map.conditions.unshift({
       type: 'frontmost_application_if',
       bundle_identifiers: [app]
     });
