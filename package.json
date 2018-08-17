@@ -1,12 +1,13 @@
 {
-  "name": "keymap",
+  "name": "karabiner-elements-keymap-gen",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "author": "takanopontaro",
-  "scripts": { "start": "node index.js" },
+  "scripts": {
+    "start": "node index.js"
+  },
   "devDependencies": {
-    "jsonify-excel": "^1.0.14",
-    "lodash": "^4.17.4"
+    "jsonify-excel": "^1.0.14"
   }
 }

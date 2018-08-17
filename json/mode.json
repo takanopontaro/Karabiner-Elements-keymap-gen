@@ -1,0 +1,293 @@
+{
+  "title": "takanopontaro-mode",
+  "rules": [
+    {
+      "description": "spacebar(f20) -> takanopontaro-mode",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "f20"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_f",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_d",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_s",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_e",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_tm",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            },
+            {
+              "name": "mode_tm",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "g"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_tm",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "f"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_f",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_f",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "d"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_d",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_d",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "s"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_s",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_s",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            },
+            {
+              "name": "mode_tm",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "a"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_tm",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "a"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 0
+              }
+            }
+          ],
+          "to_if_alone": [
+            {
+              "set_variable": {
+                "name": "mode_a",
+                "value": 0
+              }
+            },
+            {
+              "set_variable": {
+                "name": "mode_tm",
+                "value": 1
+              }
+            }
+          ],
+          "type": "basic"
+        },
+        {
+          "conditions": [
+            {
+              "name": "mode",
+              "type": "variable_if",
+              "value": 1
+            }
+          ],
+          "from": {
+            "key_code": "e"
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "mode_e",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [
+            {
+              "set_variable": {
+                "name": "mode_e",
+                "value": 0
+              }
+            }
+          ],
+          "type": "basic"
+        }
+      ]
+    }
+  ]
+}

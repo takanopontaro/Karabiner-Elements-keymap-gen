@@ -1,8 +1,7 @@
 const fs = require('fs');
-const _ = require('lodash');
 const { JsonifyExcel } = require('jsonify-excel');
 
-const DATA = new JsonifyExcel('map_mode.xlsx').toJson({ automap: true });
+const DATA = new JsonifyExcel('map.xlsx').toJson({ automap: true });
 
 const DNS = {
   caps: 'caps_lock',
@@ -39,13 +38,12 @@ const json = DATA.map(
   ({
     desc,
     app,
-    reset,
-    any,
     f,
     d,
     s,
     a,
     e,
+    tm,
     key,
     key0,
     mod0,
@@ -58,36 +56,35 @@ const json = DATA.map(
     key4,
     mod4,
   }) => {
-    const map = initMap(key);
+    const map = createMap(key, app);
 
-    mapCondition(map, 'f', f);
-    mapCondition(map, 'd', d);
-    mapCondition(map, 's', s);
-    mapCondition(map, 'a', a);
-    mapCondition(map, 'e', e);
+    setMode(map, 'f', f);
+    setMode(map, 'd', d);
+    setMode(map, 's', s);
+    setMode(map, 'a', a);
+    setMode(map, 'e', e);
+    setMode(map, 'tm', tm);
 
-    mapKey(map, key0, mod0, reset);
-    mapKey(map, key1, mod1);
-    mapKey(map, key2, mod2);
-    mapKey(map, key3, mod3);
-    mapKey(map, key4, mod4);
+    quitTm(map, !tm);
+
+    setMap(map, key0, mod0);
+    setMap(map, key1, mod1);
+    setMap(map, key2, mod2);
+    setMap(map, key3, mod3);
+    setMap(map, key4, mod4);
 
     return map;
   }
 );
 
-if (!fs.existsSync('dist')) {
-  fs.mkdirSync('dist');
-}
-
 fs.writeFileSync(
-  'dist/takanopontaro.json',
+  'dist/map.json',
   JSON.stringify(
     {
-      title: 'takanopontaro',
+      title: 'takanopontaro-map',
       rules: [
         {
-          description: 'my rule',
+          description: 'map for takanopontaro-mode',
           manipulators: json,
         },
       ],
@@ -101,47 +98,60 @@ fs.writeFileSync(
   )
 );
 
-function initMap(key) {
-  return {
+function createMap(key, app) {
+  const map = {
     type: 'basic',
     conditions: [
       {
         type: 'variable_if',
-        name: 'takanopontaro-mode',
+        name: 'mode',
         value: 1,
       },
     ],
     from: {
       key_code: DNS[key] || key,
       modifiers: {
-        optional: ['caps_lock', 'left_shift'],
+        optional: ['any'],
       },
     },
     to: [],
   };
+  if (app) {
+    map.conditions.push({
+      type: 'frontmost_application_if',
+      bundle_identifiers: [app]
+    });
+  }
+  return map;
 }
 
-function mapCondition(map, key, flag) {
+function setMode(map, key, flag) {
   if (flag) {
     map.conditions.push({
       type: 'variable_if',
-      name: `${key}-mode`,
+      name: `mode_${key}`,
       value: 1,
     });
   }
 }
 
-function mapKey(map, key, mod, reset) {
-  if (key) {
-    if (reset) {
-      map.to.push({
-        key_code: 'f1',
-        modifiers: ['left_command'],
-      });
-    }
+function quitTm(map, flag) {
+  if (flag) {
     map.to.push({
-      key_code: DNS[key] || key,
-      modifiers: mod ? mod.split(',').map(m => DNS[m]) : [],
+      set_variable: {
+        name: 'mode_tm',
+        value: 0
+      }
     });
   }
+}
+
+function setMap(map, key, mod) {
+  if (!key) {
+    return;
+  }
+  map.to.push({
+    key_code: DNS[key] || key,
+    modifiers: mod ? mod.split(',').map(m => DNS[m]) : [],
+  });
 }
